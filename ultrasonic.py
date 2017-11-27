@@ -1,15 +1,15 @@
 import RPi.GPIO as GPIO
 import time
 
-#set GPIO Pins
-GPIO_TRIGGER = 18
-GPIO_ECHO = 12
- 
-#set GPIO direction (IN / OUT)
-GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
-GPIO.setup(GPIO_ECHO, GPIO.IN)
+# #set GPIO Pins
+# GPIO_TRIGGER = 18
+# GPIO_ECHO = 12
+#
+# #set GPIO direction (IN / OUT)
+# GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
+# GPIO.setup(GPIO_ECHO, GPIO.IN)
 
-def distance():
+def distance(GPIO_TRIGGER, GPIO_ECHO):
     # set Trigger to HIGH
     GPIO.output(GPIO_TRIGGER, True)
 
@@ -36,15 +36,15 @@ def distance():
 
     return distance
 
-def start_measurement():
+def measure_distance(trigger_pin, echo_pin):
     try:
         dist_list = []
         for i in range(5):
-            dist_list.append(distance())
+            dist_list.append(distance(trigger_pin, echo_pin))
         dist = sum(dist_list)/5
-        for item in dist_list:
-            print(item)
-        print ("Average Measured Distance = {:1f} cm".format(dist))
+        # for item in dist_list:
+            # print(item)
+        print ("Measured Distance = {:1f} cm".format(dist))
         time.sleep(1)
         return dist
     except KeyboardInterrupt:
