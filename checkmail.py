@@ -9,6 +9,7 @@ class MailMan:
         self.poll_time = 2
         self.normal_distance = 0
         self.difference = 5
+        self.picture = False
         self.gpio_button = None
         self.gpio_trigger = None
         self.gpio_echo = None
@@ -28,15 +29,21 @@ class MailMan:
             if self.opened:
                 self.last_opened = self.opened_at
                 self.opened_for = time.time() - self.last_opened
+                if self.opened_for >= 1.5 and not self.picture:
+                    print("Smile for the camera :)")
+                    paths = capture(1)
+                    pi_email.send_mail(paths)
+                    self.picture = True
                 print("Mailbox has been open for {}s".format(self.opened_for))
             else:
                 self.opened = True
+                self.picture = False
                 self.opened_at = time.time()
                 print("Mailbox opened!")
                 time.sleep(1)
-                paths = capture(1)
-                pi_email.send_mail(paths)
-                # if self.opened_at - 30 >= self.last_opened :
+                #paths = capture(1)
+                #pi_email.send_mail(paths)
+                # if self.opened_at - 30 >= self.last_opened:
                 #     # If opened in last 30 seconds figure out what we do
                 self.last_opened = self.opened_at
             self.was_opened = True

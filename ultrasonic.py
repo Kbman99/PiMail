@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 import time
+import statistics
 
 # #set GPIO Pins
 # GPIO_TRIGGER = 18
@@ -41,7 +42,9 @@ def measure_distance(trigger_pin, echo_pin):
         dist_list = []
         for i in range(5):
             dist_list.append(distance(trigger_pin, echo_pin))
+            time.sleep(.050)
         dist = sum(dist_list)/5
+        #dist = statistics.median(dist_list)
         # for item in dist_list:
             # print(item)
         print ("Measured Distance = {:1f} cm".format(dist))
